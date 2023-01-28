@@ -14,7 +14,7 @@ import {
 } from "../Constants/OrderConstants";
 import { logout } from "./userActions";
 import axios from "axios";
-import{URL} from './../Url';
+import { URL } from './../Url';
 
 export const listOrders = () => async (dispatch, getState) => {
   try {
@@ -81,7 +81,7 @@ export const getOrderDetails = (id) => async (dispatch, getState) => {
 };
 
 // ORDER DELIVER
-export const deliverOrder = (id,order) => async (dispatch, getState) => {
+export const deliverOrder = (id, order) => async (dispatch, getState) => {
   try {
     dispatch({ type: ORDER_DELIVERED_REQUEST });
 
@@ -98,7 +98,7 @@ export const deliverOrder = (id,order) => async (dispatch, getState) => {
 
     const { data } = await axios.put(
       `${URL}/api/orders/${id}`,
-      {order},
+      { order },
       config
     );
     dispatch({ type: ORDER_DELIVERED_SUCCESS, payload: data });

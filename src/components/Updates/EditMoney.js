@@ -12,6 +12,8 @@ import Message from "../LoadingError/Error";
 import Loading from "../LoadingError/Loading";
 import { EditUser, updateUser } from "../../Redux/Actions/userActions";
 import { getWalletDetails, updateWallet } from "../../Redux/Actions/WalletAction";
+import axios from "axios";
+import { URL } from "../../Redux/Url";
 
 const ToastObjects = {
     pauseOnFocusLoss: false,
@@ -26,13 +28,34 @@ const EditMoneyMain = (props) => {
 
     const editUser = useSelector((state) => state.editUser);
     const { user } = editUser;
-    const getWalletByUser = useSelector((state) => state.getWalletByUser);
-    const { balance } = getWalletByUser
+    const userLogin = useSelector((state) => state.userLogin);
+    const {userInfo} =userLogin
+    // const getWalletByUser = useSelector((state) => state.getWalletByUser);
+    // const { balance } = getWalletByUser
     const [setCheck, setCheckbox] = useState(user?.isAdmin)
-    const [money, setMoney] = useState(balance?.balance)
+    const [money, setMoney] = useState('')
+    // useEffect(() => {
+    //     // dispatch(EditUser(productId))
+    //     dispatch(getWalletDetails(productId))
+    // }, [dispatch])
     useEffect(() => {
-        dispatch(EditUser(productId))
-    }, [dispatch])
+        const config = {
+          headers: {
+            Authorization: `Bearer ${userInfo.token}`,
+          },
+        };
+        // console.log(userInfo.token)
+        axios.get(`${URL}/api/Waller/${productId}/balance`,config)
+            .then(data => {
+            setMoney(data.data.balance);
+            
+          })
+          .catch(error => {
+            console.log(error)
+          })
+    
+      }, [dispatch]);
+
     const submitHandler = (e) => {
         e.preventDefault();
         dispatch(
@@ -42,9 +65,7 @@ const EditMoneyMain = (props) => {
             })
         );
     };
-    useEffect(() => {
-        dispatch(getWalletDetails(productId))
-    }, [dispatch])
+ 
     return (
         <>
             <Toast />
@@ -75,7 +96,7 @@ const EditMoneyMain = (props) => {
                     <Message variant="alert-danger">{error}</Message>
                   ) : ( */}
                                     <>
-                                        <div className="mb-4">
+                                        {/* <div className="mb-4">
                                             <label htmlFor="product_title" className="form-label">
                                                 Name User
                                             </label>
@@ -104,7 +125,7 @@ const EditMoneyMain = (props) => {
                                                 required
 
                                             />
-                                        </div>
+                                        </div> */}
                                         {/* <div className="mb-4">
                       <label htmlFor="product_price" className="form-label">
                         IsAdmin

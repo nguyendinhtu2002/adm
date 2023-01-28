@@ -3,7 +3,15 @@ import { useDispatch, useSelector } from "react-redux";
 import Loading from "../components/LoadingError/Loading";
 import Toast from "../components/LoadingError/Toast";
 import { login } from "../Redux/Actions/userActions";
+import { toast } from "react-toastify";
+
 import Message from "./../components/LoadingError/Error";
+const Toastobjects = {
+  pauseOnFocusLoss: false,
+  draggable: false,
+  pauseOnHover: false,
+  autoClose: 2000,
+};
 
 const Login = ({ history }) => {
   window.scrollTo(0, 0);
@@ -14,6 +22,7 @@ const Login = ({ history }) => {
 
   const userLogin = useSelector((state) => state.userLogin);
   const { error, loading, userInfo } = userLogin;
+  const toastId = React.useRef(null);
 
   useEffect(() => {
     if (userInfo) {
@@ -24,6 +33,16 @@ const Login = ({ history }) => {
   const submitHandler = (e) => {
     e.preventDefault();
     dispatch(login(email, password));
+    if (error === undefined) {
+      if (!toast.isActive(toastId.current)) {
+        toastId.current = toast.success("Login thành công", Toastobjects);
+      }
+    }
+    else{
+      if (!toast.isActive(toastId.current)) {
+        toastId.current = toast.error("Login that bai", Toastobjects);
+      }
+    }
   };
   return (
     <>
@@ -33,7 +52,7 @@ const Login = ({ history }) => {
         style={{ maxWidth: "380px", marginTop: "100px" }}
       >
         <div className="card-body">
-          {error && <Message variant="alert-danger">{error}</Message>}
+          {/* {error && <Message variant="alert-danger">{error}</Message>} */}
           {loading && <Loading />}
           <h4 className="card-title mb-4 text-center">Sign in</h4>
           <form onSubmit={submitHandler}>

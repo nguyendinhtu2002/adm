@@ -8,7 +8,6 @@ const TopTotal = (props) => {
       totalSale = totalSale + order.totalPrice
     );
   }
-  console.log(totalSale);
   return (
     <div className="row">
       <div className="col-lg-4">

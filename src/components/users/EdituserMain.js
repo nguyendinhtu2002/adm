@@ -25,7 +25,6 @@ const EditUserMain = (props) => {
 
   const editUser = useSelector((state) => state.editUser);
   const {  user } = editUser;
-  console.log(user);
   const [setCheck,setCheckbox]= useState(user?.isAdmin)
   const [money,setMoney] = useState(user?.money)
   useEffect(() => {
@@ -109,21 +108,7 @@ const EditUserMain = (props) => {
                         <label class="form-check-label">Admin</label>
                       </div>
                     </div> */}
-                    <div className="mb-4">
-                      <label htmlFor="product_price" className="form-label">
-                        Money
-                      </label>
-                      <input
-                        type="number"
-                        placeholder="Type here"
-                        className="form-control"
-                        id="product_price"
-                        value={money}
-                        onChange={(e)=>{setMoney(e.target.value)}}
-                        required
-
-                      />
-                    </div>
+                
 
                   </>
 

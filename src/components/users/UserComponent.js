@@ -8,6 +8,7 @@ import DataTable from 'react-data-table-component'
 
 import axios from "axios";
 import { getBalance } from "../../Redux/Actions/WalletAction";
+import { URL } from "../../Redux/Url";
 
 const UserComponent = () => {
   const dispatch = useDispatch();
@@ -97,7 +98,7 @@ const UserComponent = () => {
         Authorization: `Bearer ${userInfo.token}`,
       },
     };
-    axios.get("https://up-views.herokuapp.com/api/users", config)
+    axios.get(`${URL}/api/users`, config)
       .then(data => {
         setData(data.data);
         setTempData(data.data);
@@ -107,6 +108,7 @@ const UserComponent = () => {
         // dispatch(listStatus(arr.toString()))
       })
       .catch(error => {
+        console.log(error)
       })
 
   }, [dispatch]);

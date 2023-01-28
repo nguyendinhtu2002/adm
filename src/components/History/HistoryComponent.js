@@ -9,6 +9,7 @@ import moment from "moment";
 import axios from "axios";
 import { getBalance } from "../../Redux/Actions/WalletAction";
 import { deleteCashFLow } from "../../Redux/Actions/CashFlowAction";
+import { URL } from "../../Redux/Url";
 
 const HistoryComponents = () => {
     const dispatch = useDispatch();
@@ -80,7 +81,7 @@ const HistoryComponents = () => {
         },
         {
             name: "RemainingMoney",
-            selector: (row) => row.remainingMoney
+            selector: (row) => (row.remainingMoney.toFixed(2))
         },
         {
             name: "CreateAt",
@@ -111,7 +112,7 @@ const HistoryComponents = () => {
                 Authorization: `Bearer ${userInfo.token}`,
             },
         };
-        axios.get("https://up-views.herokuapp.com/api/cashFlow/all")
+        axios.get(`${URL}/api/cashFlow/all`)
             .then(data => {
                 setData(data.data);
                 setTempData(data.data);

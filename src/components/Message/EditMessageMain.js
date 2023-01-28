@@ -1,22 +1,58 @@
+import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useLocation } from 'react-router-dom';
+import Toast from "./../LoadingError/Toast";
+import { toast } from "react-toastify";
+
 import { messagelistDetailMessage, updateMessage } from '../../Redux/Actions/MessageAction';
+import { URL } from '../../Redux/Url';
+const Toastobjects = {
+    pauseOnFocusLoss: false,
+    draggable: false,
+    pauseOnHover: false,
+    autoClose: 2000,
+};
+
 export default function EditMessageMain() {
     const dispatch = useDispatch()
     const location = useLocation();
-    const tempt = "/editMessage/1"
-    const messageListDetail = useSelector((state) => state.messageListDetail)
     const redirect = location.pathname ? Number(location.pathname.split("/")[2]) : "";
-    const { messager } = messageListDetail
+    const userLogin = useSelector((state) => state.userLogin);
+    const { userInfo } = userLogin
+    const messageUpdate = useSelector((state) => state.messageUpdate)
+    const { error } = messageUpdate
     // const obj1 = Object.assign({}, messager);
-    const [Request, setRequest] = useState(messager?.reportOrder[0].Request);
-    const [message, setMessage] = useState(messager?.reportOrder[0].message);
-    const [repmessage, setRepmessage] = useState(messager?.reportOrder[0].repmessage)
+    const [Request, setRequest] = useState('');
+    const [message, setMessage] = useState('');
+    const [repmessage, setRepmessage] = useState('')
     const [status, setStatus] = useState('')
+    const toastId = React.useRef(null);
+
+    // useEffect(() => {
+    //     dispatch((messagelistDetailMessage(redirect)))
+    // }, [dispatch])
     useEffect(() => {
-        dispatch((messagelistDetailMessage(redirect)))
-    }, [dispatch])
+        const config = {
+            headers: {
+                Authorization: `Bearer ${userInfo.token}`,
+            },
+        };
+        // console.log(userInfo.token)
+        axios.get(`${URL}/api/report/${redirect}`, config)
+            .then(data => {
+                console.log(data.data.reportOrder[0].Request);
+                setRequest(data.data.reportOrder[0].Request)
+                setMessage(data.data.reportOrder[0].message)
+                setRepmessage(data.data.reportOrder[0].repmessage)
+                // setStatus(data.data.reportOrder[0].status)
+
+            })
+            .catch(error => {
+                console.log(error)
+            })
+
+    }, [dispatch]);
 
     const submitHandler = (e) => {
         e.preventDefault();
@@ -27,14 +63,25 @@ export default function EditMessageMain() {
                 status,
             })
         );
+        if (error === undefined) {
+            if (!toast.isActive(toastId.current)) {
+                toastId.current = toast.success("Edit thành công", Toastobjects);
+            }
+        }
+        else{
+            if (!toast.isActive(toastId.current)) {
+                toastId.current = toast.error(error, Toastobjects);
+            }
+        }
     };
     return (
         <div>
+            <Toast />
             <section className="content-main" style={{ maxWidth: "1200px" }}>
                 <form onSubmit={submitHandler} >
                     <div className="content-header">
-                        <Link to="/users" className="btn btn-danger text-white">
-                            Go to User
+                        <Link to="/message" className="btn btn-danger text-white">
+                            Go to Message
                         </Link>
                         <h2 className="content-title">Update Product</h2>
                         <div>

@@ -23,9 +23,12 @@ const EditProductMain = (props) => {
 
   const [name, setName] = useState("");
   const [price, setPrice] = useState(0);
-  const [image, setImage] = useState("");
-  const [countInStock, setCountInStock] = useState(0);
-  const [description, setDescription] = useState("");
+  const [category, setCategory] = useState("");
+  const [service, setService] = useState("");
+  const [platform, setPlatform] = useState("");
+
+  const [min, setMin] = useState(0);
+  const [max, setMax] = useState("");
 
   const dispatch = useDispatch();
 
@@ -44,14 +47,16 @@ const EditProductMain = (props) => {
       dispatch({ type: PRODUCT_UPDATE_RESET });
       toast.success("Product Updated", ToastObjects);
     } else {
-      if (!product.name || product._id !== productId) {
+      if (!product?.name || product._id !== productId) {
         dispatch(editProduct(productId));
       } else {
         setName(product.name);
-        setDescription(product.description);
-        setCountInStock(product.countInStock);
-        setImage(product.image);
-        setPrice(product.price);
+        setMin(product.min);
+        setMax(product.max);
+        setPrice(product.rate);
+        setCategory(product.category)
+        setService(product.service)
+        setPlatform(product.platform)
       }
     }
   }, [product, dispatch, productId, successUpdate]);
@@ -63,9 +68,10 @@ const EditProductMain = (props) => {
         _id: productId,
         name,
         price,
-        description,
-        image,
-        countInStock,
+        category,
+        platform,
+        min,
+        max,
       })
     );
   };
@@ -88,7 +94,7 @@ const EditProductMain = (props) => {
           </div>
 
           <div className="row mb-4">
-            <div className="col-xl-8 col-lg-8">
+            <div className="col-xl-12 col-lg-12">
               <div className="card mb-4 shadow-sm">
                 <div className="card-body">
                   {errorUpdate && (
@@ -110,8 +116,55 @@ const EditProductMain = (props) => {
                           placeholder="Type here"
                           className="form-control"
                           id="product_title"
+                          value={name}
+                          onChange={(e) => { setName(e.target.value) }}
                           required
-                          
+
+                        />
+                      </div>
+                      <div className="mb-4">
+                        <label htmlFor="product_title" className="form-label">
+                          Category
+                        </label>
+                        <input
+                          type="text"
+                          placeholder="Type here"
+                          className="form-control"
+                          id="product_title"
+                          value={category}
+                          onChange={(e) => { setCategory(e.target.value) }}
+                          required
+
+                        />
+                      </div>
+                      <div className="mb-4">
+                        <label htmlFor="product_title" className="form-label">
+                          Platform
+                        </label>
+                        <input
+                          type="text"
+                          placeholder="Type here"
+                          className="form-control"
+                          id="product_title"
+                          value={platform}
+                          onChange={(e) => { setPlatform(e.target.value) }}
+                          required
+
+                        />
+                      </div>
+                      <div className="mb-4">
+                        <label htmlFor="product_title" className="form-label">
+                          Service
+                        </label>
+                        <input
+                          type="text"
+                          placeholder="Type here"
+                          className="form-control"
+                          id="product_title"
+                          value={service}
+                          onChange={(e) => { setService(e.target.value) }}
+                          required
+
                         />
                       </div>
                       <div className="mb-4">
@@ -123,41 +176,40 @@ const EditProductMain = (props) => {
                           placeholder="Type here"
                           className="form-control"
                           id="product_price"
+                          value={price}
+                          onChange={(e) => { setPrice(e.target.value) }}
                           required
-                          
+
                         />
                       </div>
                       <div className="mb-4">
                         <label htmlFor="product_price" className="form-label">
-                          Count In Stock
+                          Min
                         </label>
                         <input
                           type="number"
                           placeholder="Type here"
                           className="form-control"
                           id="product_price"
+                          value={min}
+                          onChange={(e) => { setMin(e.target.value) }}
                           required
-                         
+
                         />
                       </div>
                       <div className="mb-4">
-                        <label className="form-label">Description</label>
-                        <textarea
+                        <label className="form-label">Max</label>
+                        <input
                           placeholder="Type here"
                           className="form-control"
                           rows="7"
+                          value={max}
+                          onChange={(e) => { setMax(e.target.value) }}
                           required
-                         
-                        ></textarea>
-                      </div>
-                      <div className="mb-4">
-                        <label className="form-label">Images</label>
-                        <input
-                          className="form-control"
-                          type="text"
-                          required
+
                         />
                       </div>
+                     
                     </>
                   )}
                 </div>

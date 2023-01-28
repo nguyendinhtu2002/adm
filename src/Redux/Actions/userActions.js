@@ -146,10 +146,20 @@ export const deleteUser = (id) => async (dispatch, getState) => {
 
 
 // EDIT USER
-export const EditUser = (id) => async (dispatch) => {
+export const EditUser = (id) => async (dispatch,getState) => {
   try {
+
     dispatch({ type: USER_EDIT_REQUEST });
-    const { data } = await axios.get(`${URL}/api/users/${id}`);
+    const {
+      userLogin: { userInfo },
+    } = getState();
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+    const { data } = await axios.get(`${URL}/api/users/${id}`,config);
     dispatch({ type: USER_EDIT_SUCCESS, payload: data });
   } catch (error) {
     const message =

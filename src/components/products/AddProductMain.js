@@ -16,10 +16,12 @@ const ToastObjects = {
 };
 const AddProductMain = () => {
   const [name, setName] = useState("");
-  const [price, setPrice] = useState(0);
-  const [image, setImage] = useState("");
-  const [countInStock, setCountInStock] = useState(0);
-  const [description, setDescription] = useState("");
+  const [rate, setRate] = useState(0);
+  const [category, setCategory] = useState("");
+  const [service, setService] = useState("");
+  const [min, setMin] = useState(0);
+  const [max, setMax] = useState("");
+  const [platform, setPlatform] = useState("");
 
   const dispatch = useDispatch();
 
@@ -31,16 +33,18 @@ const AddProductMain = () => {
       toast.success("Product Added", ToastObjects);
       dispatch({ type: PRODUCT_CREATE_RESET });
       setName("");
-      setDescription("");
-      setCountInStock(0);
-      setImage("");
-      setPrice(0);
+      setCategory("");
+      setPlatform("");
+      setService("")
+      setMin("");
+      setMax("");
+      setRate(0);
     }
   }, [product, dispatch]);
 
   const submitHandler = (e) => {
     e.preventDefault();
-    dispatch(createProduct(name, price, description, image, countInStock));
+    dispatch(createProduct(name, rate, min, max,category,platform,service));
   };
 
   return (
@@ -61,7 +65,7 @@ const AddProductMain = () => {
           </div>
 
           <div className="row mb-4">
-            <div className="col-xl-8 col-lg-8">
+            <div className="col-xl-12 col-lg-12">
               <div className="card mb-4 shadow-sm">
                 <div className="card-body">
                   {error && <Message variant="alert-danger">{error}</Message>}
@@ -90,8 +94,22 @@ const AddProductMain = () => {
                       className="form-control"
                       id="product_price"
                       required
-                    // value={price}
-                    // onChange={(e) => setPrice(e.target.value)}
+                      value={category}
+                      onChange={(e) => setCategory(e.target.value)}
+                    />
+                  </div>
+                  <div className="mb-4">
+                    <label htmlFor="product_price" className="form-label">
+                      Service
+                    </label>
+                    <input
+                      type="text"
+                      placeholder="Type here"
+                      className="form-control"
+                      id="product_price"
+                      required
+                      value={service}
+                    onChange={(e) => setService(e.target.value)}
                     />
                   </div>
                   <div className="mb-4">
@@ -104,8 +122,8 @@ const AddProductMain = () => {
                       className="form-control"
                       id="product_price"
                       required
-                      // value={countInStock}
-                      // onChange={(e) => setCountInStock(e.target.value)}
+                      value={platform}
+                      onChange={(e) => setPlatform(e.target.value)}
                     />
                   </div>
                   <div className="mb-4">
@@ -115,8 +133,8 @@ const AddProductMain = () => {
                       placeholder="Type here"
                       className="form-control"
                       required
-                      value={description}
-                      onChange={(e) => setDescription(e.target.value)}
+                      value={rate}
+                      onChange={(e) => setRate(e.target.value)}
                     ></input>
                   </div>
                   <div className="mb-4">
@@ -126,8 +144,8 @@ const AddProductMain = () => {
                       placeholder="Type here"
                       className="form-control"
                       required
-                      value={description}
-                      onChange={(e) => setDescription(e.target.value)}
+                      value={min}
+                      onChange={(e) => setMin(e.target.value)}
                     ></input>
                   </div>
                   <div className="mb-4">
@@ -137,11 +155,11 @@ const AddProductMain = () => {
                       placeholder="Type here"
                       className="form-control"
                       required
-                      value={description}
-                      onChange={(e) => setDescription(e.target.value)}
+                      value={max}
+                      onChange={(e) => setMax(e.target.value)}
                     ></input>
                   </div>
-                  <div className="mb-4">
+                  {/* <div className="mb-4">
                     <label className="form-label">Type</label>
                     <input
                       className="form-control"
@@ -151,7 +169,7 @@ const AddProductMain = () => {
                       required
                       onChange={(e) => setImage(e.target.value)}
                     />
-                  </div>
+                  </div> */}
                 </div>
               </div>
             </div>

@@ -21,10 +21,20 @@ export const getBalance = () => async (dispatch) => {
     }
 };
 // GET WALLET DETAILS
-export const getWalletDetails = (id) => async (dispatch) => {
+export const getWalletDetails = (id) => async (dispatch,getState) => {
     try {
       dispatch({ type: GETDETAILS_BALANCE_REQUEST });
-      const { data } = await axios.get(`${URL}/api/Waller/${id}/balance`);
+      const {
+        userLogin: { userInfo },
+    } = getState();
+
+    const config = {
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${userInfo.token}`,
+        },
+    };
+      const { data } = await axios.get(`${URL}/api/Waller/${id}/balance`,config);
       dispatch({ type: GETDETAILS_BALANCE_SUCCESS, payload: data });
     } catch (error) {
       const message =
